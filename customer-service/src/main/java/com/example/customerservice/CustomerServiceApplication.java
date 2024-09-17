@@ -1,7 +1,13 @@
 package com.example.customerservice;
 
+import com.example.customerservice.entitie.Customer;
+import com.example.customerservice.repository.CustomerRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 @SpringBootApplication
 public class CustomerServiceApplication {
@@ -10,4 +16,18 @@ public class CustomerServiceApplication {
         SpringApplication.run(CustomerServiceApplication.class, args);
     }
 
+    @Bean
+    public CommandLineRunner commandLineRunner(CustomerRepository customerRepository){
+        return args -> {
+            customerRepository.saveAll(
+                    List.of(
+                            Customer.builder().name("hassane").email("hassane@gmail.com").build(),
+                            Customer.builder().name("hassane2").email("hassane2@gmail.com").build(),
+                            Customer.builder().name("hassane3").email("hassane3@gmail.com").build(),
+                            Customer.builder().name("hassane4").email("hassane4@gmail.com").build()
+                    )
+            );
+            customerRepository.findAll().forEach(System.out::println);
+        };
+    }
 }
