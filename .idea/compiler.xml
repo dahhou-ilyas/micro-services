@@ -11,6 +11,7 @@
         <module name="customer-service" />
         <module name="demo" />
         <module name="gateway-service" />
+        <module name="discovery-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="customer-service" options="-parameters" />
       <module name="demo" options="-parameters" />
+      <module name="discovery-service" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
