@@ -10,6 +10,7 @@
         <module name="inventory-service" />
         <module name="customer-service" />
         <module name="demo" />
+        <module name="gateway-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +23,7 @@
       <module name="customer-service" options="-parameters" />
       <module name="demo" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="gateway-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
     </option>
   </component>
