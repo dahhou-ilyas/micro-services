@@ -1,5 +1,6 @@
 package com.example.billingservie.entities;
 
+import com.example.billingservie.model.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +18,6 @@ public class ProductItem {
     private int quantity;
     private double price;
     private double discount;
+    @Transient
+    private Product product;
 }
