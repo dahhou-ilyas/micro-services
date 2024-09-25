@@ -1,5 +1,6 @@
 package com.example.billingservie.entities;
 
+import com.example.billingservie.model.Customer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +22,6 @@ public class Bill {
     private long customerId;
     @OneToMany(mappedBy = "bill")
     private List<ProductItem> productItems;
+    @Transient // ignorer cette attribuer dans la base de donné
+    private Customer customer;
 }
