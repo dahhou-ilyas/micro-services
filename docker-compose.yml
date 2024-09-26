@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    depends_on:
+      - discovery-service
+    networks:
+      - microservices-network
+
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery-service
+    networks:
+      - microservices-network
+
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery-service
+    networks:
+      - microservices-network
+
+  billing-servie:
+    build:
+      context: ./billing-servie
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8083"
+    depends_on:
+      - discovery-service
+      - customer-service
+      - inventory-service
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
