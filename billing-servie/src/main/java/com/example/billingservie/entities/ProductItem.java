@@ -1,6 +1,7 @@
 package com.example.billingservie.entities;
 
 import com.example.billingservie.model.Product;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ public class ProductItem {
     private long id;
     private long productId;
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Bill bill;
     private int quantity;
     private double price;
