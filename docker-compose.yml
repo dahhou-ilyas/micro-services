@@ -20,6 +20,8 @@ services:
       - discovery-service
     networks:
       - microservices-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
 
   customer-service:
     build:
@@ -29,9 +31,15 @@ services:
       - "8081:8081"
     depends_on:
       - discovery-service
+      - gateway-service
     networks:
       - microservices-network
-
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      retries: 3
 
   inventory-service:
     build:
@@ -41,21 +49,33 @@ services:
       - "8082:8082"
     depends_on:
       - discovery-service
+      - gateway-service
     networks:
       - microservices-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      retries: 3
 
-  billing-servie:
+  billing-service:  # Corrigez le nom de ce service
     build:
       context: ./billing-servie
       dockerfile: Dockerfile
     ports:
-      - "8082:8083"
+      - "8083:8083"
     depends_on:
-      - discovery-service
       - customer-service
       - inventory-service
+      - gateway-service
+      - discovery-service
+
     networks:
       - microservices-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka/
+    restart: on-failure:3
 
 networks:
   microservices-network:
