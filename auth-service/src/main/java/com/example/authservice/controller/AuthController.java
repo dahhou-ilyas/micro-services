@@ -1,5 +1,6 @@
 package com.example.authservice.controller;
 
+import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.entities.UserCredentiel;
 import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public String getToken(UserCredentiel userCredentiel) {
-        return authService.generateToken(userCredentiel.getUsername());
+    public String getToken(@RequestBody AuthRequest authRequest) {
+        return authService.generateToken(authRequest.getUsername());
     }
 
     @GetMapping("/validate")
