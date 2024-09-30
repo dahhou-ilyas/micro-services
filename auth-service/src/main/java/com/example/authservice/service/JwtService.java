@@ -20,9 +20,7 @@ public class JwtService {
     public static final String SECRET = "DJD586TYG6TIBTVITI688TOB8YBO7T6R5RC5C4C4X5XSDCE65V";
 
     public void validateToken(String token) {
-        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
-
-
+        Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
     }
 
     public String generateToken(String userName) {
