@@ -4,6 +4,10 @@ import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.entities.UserCredentiel;
 import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private AuthService authService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public String addUser(@RequestBody UserCredentiel userCredentiel) {
@@ -19,7 +25,14 @@ public class AuthController {
 
     @PostMapping("/token")
     public String getToken(@RequestBody AuthRequest authRequest) {
-        return authService.generateToken(authRequest.getUsername());
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+
+        if (authenticate.isAuthenticated()) {
+            return authService.generateToken(authRequest.getUsername());
+        }else {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+
     }
 
     @GetMapping("/validate")
