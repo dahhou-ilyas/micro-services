@@ -41,6 +41,7 @@ public class GatewayServiceApplication {
                         .uri("lb://CUSTOMER-SERVICE"))
                 .route("auth-service", r -> r
                         .path("/auth/**")
+                        .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
                         .uri("lb://AUTH-SERVICE"))
                 .build();
     }

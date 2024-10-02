@@ -26,6 +26,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
+            System.out.println("_________________________________");
+            System.out.println(routeValidator.isSecured.test(exchange.getRequest()));
+
+            System.out.println("_________________________________");
             if(routeValidator.isSecured.test(exchange.getRequest())){
                 if(!exchange.getRequest().getHeaders().containsKey("Authorization")){
                     throw new RuntimeException("Authorization header not present");
