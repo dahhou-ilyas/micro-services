@@ -26,10 +26,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
-            System.out.println("_________________________________");
-            System.out.println(routeValidator.isSecured.test(exchange.getRequest()));
-
-            System.out.println("_________________________________");
+            ServerHttpRequest loggedUser = null;
             if(routeValidator.isSecured.test(exchange.getRequest())){
                 if(!exchange.getRequest().getHeaders().containsKey("Authorization")){
                     throw new RuntimeException("Authorization header not present");
@@ -44,14 +41,19 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     //restTemplate.getForObject("http://AUTH-SERVICE/auth/validate",String.class);
                     jwtUtils.validateToken(authHeader);
 
-                    exchange.getRequest().mutate().header("loggedUser", jwtUtils.extractUsername(authHeader));
+                    loggedUser = exchange.getRequest()
+                            .mutate()
+                            .header("loggedUser", jwtUtils.extractUsername(authHeader))
+                            .build();
+
+                    System.out.println(loggedUser.getHeaders().get("loggedUser"));
                 }catch (Exception e){
                     e.printStackTrace();
                     throw new RuntimeException("invalide acees");
                 }
 
             }
-            return chain.filter(exchange);
+            return chain.filter(exchange.mutate().request(loggedUser).build());
         }));
     }
 

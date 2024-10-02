@@ -44,9 +44,11 @@ public class GatewayServiceApplication {
                         .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
                         .uri("lb://AUTH-SERVICE"))
                 .route("billing-servie", r -> r
-                        .path("/auth/**")
+                        .path("/fullBill/**") // Premier chemin
+                        .or().path("/bills/**") // Deuxième chemin
+                        .or().path("/productItems/**")
                         .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://AUTH-SERVICE"))
+                        .uri("lb://BILLING-SERVIE"))
                 .build();
     }
 }

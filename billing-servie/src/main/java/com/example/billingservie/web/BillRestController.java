@@ -5,9 +5,7 @@ import com.example.billingservie.repository.BillRepository;
 import com.example.billingservie.repository.ProductItemRepository;
 import com.example.billingservie.service.CustomerRestClient;
 import com.example.billingservie.service.ProductRestClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,7 +27,10 @@ public class BillRestController {
     }
 
     @GetMapping("/fullBill/{id}")
-    public Bill bill(@PathVariable Long id){
+    public Bill bill(@PathVariable Long id, @RequestHeader("loggedUser") String username) {
+        System.out.println("?????????????????????");
+        System.out.println(username);
+        System.out.println("?????????????????????");
         Optional<Bill> isbill=billRepository.findById(id);
         if(!isbill.isPresent()){
             throw new RuntimeException("bill not existe");
