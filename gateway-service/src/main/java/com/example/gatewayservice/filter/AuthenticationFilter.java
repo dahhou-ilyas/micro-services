@@ -43,6 +43,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 try {
                     //restTemplate.getForObject("http://AUTH-SERVICE/auth/validate",String.class);
                     jwtUtils.validateToken(authHeader);
+
+                    exchange.getRequest().mutate().header("loggedUser", jwtUtils.extractUsername(authHeader));
                 }catch (Exception e){
                     e.printStackTrace();
                     throw new RuntimeException("invalide acees");
