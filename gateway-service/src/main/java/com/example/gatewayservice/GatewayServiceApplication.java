@@ -43,6 +43,10 @@ public class GatewayServiceApplication {
                         .path("/auth/**")
                         .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
                         .uri("lb://AUTH-SERVICE"))
+                .route("billing-servie", r -> r
+                        .path("/auth/**")
+                        .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
+                        .uri("lb://AUTH-SERVICE"))
                 .build();
     }
 }
