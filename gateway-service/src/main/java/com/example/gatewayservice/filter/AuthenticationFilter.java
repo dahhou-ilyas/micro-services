@@ -1,5 +1,6 @@
 package com.example.gatewayservice.filter;
 
+import com.example.gatewayservice.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -15,6 +16,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     private RouteValidator routeValidator;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    JwtUtils jwtUtils;
 
     public AuthenticationFilter() {
         super(Config.class);
@@ -35,6 +38,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
                 try {
                     //restTemplate.getForObject("http://AUTH-SERVICE/auth/validate",String.class);
+                    jwtUtils.validateToken(authHeader);
                 }catch (Exception e){
                     e.printStackTrace();
                     throw new RuntimeException("invalide acees");
